@@ -1,3 +1,5 @@
+# This repository is currently a work-in-progress.
+
 # Plugins
 Just my work with the Roblox Studio plugins I've made.
 
@@ -6,5 +8,3 @@ Any models (mainly their code) that I've released on the Toolbox/Library for Rob
 
 # Exploits
 Scripts used to bypass in-game security. Primarily developed from Synapse X.
-
-# This repository is currently a work-in-progress.
