@@ -2,7 +2,7 @@
 This repository is currently a work-in-progress.
 
 ## Plugins
-Just my work with the Roblox Studio plugins I've made.
+Processes for Roblox Studio.
 
 ## Exploits
-My released developments for Roblox script executors.
+Released developments for script executors.
