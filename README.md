@@ -1,7 +1,8 @@
-# This repository is currently a work-in-progress.
+# Roblox
+This repository is currently a work-in-progress.
 
 ## Plugins
-Just my work with the Roblox Studio plugins I've made.
+My released processes for Roblox Studio.
 
 ## Exploits
-Scripts used to bypass in-game security. Primarily developed from Synapse X.
+Released developments for script executors.
