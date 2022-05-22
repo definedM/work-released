@@ -1,0 +1,9 @@
+
+local mapper = require(pathOfModule)
+
+local UI = mapper:New("ola", Vector2.new(0, 0), Vector2.new(100, 100), false)
+local btn = UI:posUI("TextButton", Vector2.new(50, 50))
+btn.Parent = UI:getParentUI()
+btn.MouseButton1Up:Connect(function()
+	print('clicked')
+end)
