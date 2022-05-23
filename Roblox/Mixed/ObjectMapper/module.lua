@@ -47,7 +47,8 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipX
 	frame.BackgroundColor3 = Color3.fromRGB(140, 140, 140)
 	frame.BorderSizePixel = 0
 	frame.Position = UDim2.new(0.5, 0, 0.5, 0)
-	frame.Size = UDim2.new(0.8, 0, 0.73, 0)
+	frame.Size = UDim2.new(0.7, 0, 0.65, 0)
+	frame.ClipsDescendants = true
 
 	txtLabel.AnchorPoint = Vector2.new(0.5, 0)
 	txtLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -157,7 +158,7 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipX
 		end
 		
 		for property in pairs(events) do --load UI with the properties
-			property['Callback']()
+			events[property]['Callback']()
 		end
 		
 		UIContainer[#UIContainer + 1] = {UI, events}
