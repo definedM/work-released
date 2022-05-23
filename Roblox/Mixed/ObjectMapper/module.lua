@@ -2,15 +2,31 @@
 local LP = game.Players.LocalPlayer
 local objMapper = {}
 
-local function scaleTo1(A, B, C) --A is input, B is low num, and C is high num
-	return (A-B) / (C-B)
+local function InitPos(pos1, pos2)
+	pos1 = pos1 or Vector2.new(0, 0)
+	pos2 = pos2 or Vector2.new(200, 200)
+
+	local finalVec = {1, 1}
+	
+	if pos1.Magnitude > pos2.Magnitude then
+		local posHold = pos2
+		pos2 = pos1
+		pos1 = posHold
+	end --worldpos1 is the lesser vector
+
+	return pos1, pos2
 end
 
 function objMapper:CreatePropertyEvent(Property, Callback)
 	return {[Property] = Callback}
 end
 
-function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipYAxis:boolean) --worldPos needs to be a world Vector3 converted to Vector2
+function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipXAxis:boolean, flipYAxis:boolean) --worldPos needs to be a world Vector3 converted to Vector2
+	if flipXAxis == nil then flipXAxis = false end
+	if flipYAxis == nil then flipYAxis = false end
+	worldPos1, worldPos2 = InitPos(worldPos1, worldPos2, flipXAxis, flipYAxis)
+	
+	--[[
 	worldPos1 = worldPos1 or Vector2.new(0, 0)
 	worldPos2 = worldPos2 or Vector2.new(200, 200)
 	
@@ -19,13 +35,9 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipY
 		worldPos2 = worldPos1
 		worldPos1 = posHold
 	end --worldpos1 is the lesser vector
-	
-	--[[
-	local border, worldPos1, worldPos2 = Vector2.new(worldPos2.X-worldPos1.X, worldPos2.Y-worldPos1.Y), nil, nil
-	if flipYAxis then border = Vector2.new(border.X, -border.Y) end
+
+	if flipYAxis then worldPos1, worldPos2 = Vector2.new(worldPos1.X, -worldPos1.Y), Vector2.new(worldPos2.X, -worldPos2.Y) end
 	]]
-	if flipYAxis then worldPos1, worldPos2, flipYAxis = Vector2.new(worldPos1.X, -worldPos1.Y), Vector2.new(worldPos2.X, -worldPos2.Y), nil end
-	
 	local sGui = Instance.new("ScreenGui")
 	local frame = Instance.new("Frame")
 	local txtLabel = Instance.new("TextLabel")
@@ -58,13 +70,32 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipY
 	end
 	
 	local Modify = {}
+	local UIContainer = {}
+	
+	local function scaleTo1(A, B, C, flip) --A is input, B is low num, and C is high num
+		
+		local One = math.abs((A-B) / (C-B))
+		if typeof(flip) == "boolean" and flip == true then One = 1-One end
+		return One
+	end
 	
 	function Modify:getParentUI()
 		return frame
 	end
 	
-	function Modify:objUI(class:string, object:Part, sizeScale:number, addEvents:table) --addEvents can be used to replace unwanted events
-		sizeScale = sizeScale or 1
+	function Modify:updateWorldPos(newPos1:Vector2, newPos2:Vector2, newflipXAxis:boolean, newflipYAxis:boolean)
+		if newflipXAxis == nil then newflipXAxis = flipXAxis end
+		if newflipYAxis == nil then newflipYAxis = flipYAxis end
+		worldPos1, worldPos2 = InitPos(worldPos1)
+		
+		for UI, events in pairs(UIContainer) do
+			if events['Position'] then events['Position']['Callback']() end
+			if events['Size'] then events['Size']['Callback']() end
+			if events['Orientation'] then events['Orientation']['Callback']() end
+		end
+	end
+	
+	function Modify:objUI(class:string, object:Part, addEvents:table) --addEvents can be used to replace unwanted events
 		local UI = Instance.new(class)
 		UI.AnchorPoint = Vector2.new(0.5, 0.5)
 		UI.BorderSizePixel = 0
@@ -75,8 +106,10 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipY
 			UI.Text = object.Name
 		end
 		events['Position']['Callback'] = function()
-			UI.Position = UDim2.new(scaleTo1(object.Position.X, worldPos1.X, worldPos2.X), 0,
-				scaleTo1(object.Position.Y, worldPos1.Y, worldPos2.Y), 0)
+			local objPos = object.Position
+			UI.Position = UDim2.new(scaleTo1(objPos.X, worldPos1.X, worldPos2.X, flipXAxis), 0,
+				scaleTo1(objPos.Z, worldPos1.Y, worldPos2.Y, flipYAxis), 0)
+			UI.ZIndex = objPos.Y
 		end
 		events['Size']['Callback'] = function()
 			UI.Size = UDim2.new(scaleTo1(object.Size.X, worldPos1.X, worldPos2.X), 0, 
@@ -111,6 +144,7 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipY
 			events[property]['Callback']()
 		end
 		
+		UIContainer[#UIContainer + 1] = {UI, events}
 		return UI
 	end
 	function Modify:posUI(class:string, newWorldPos:Vector2, newWorldSize:Vector2) --its objUI but with no events and uses Position for performance
@@ -119,8 +153,8 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipY
 		UI.AnchorPoint = Vector2.new(0.5, 0.5)
 		UI.BorderSizePixel = 0
 		
-		UI.Position = UDim2.new(scaleTo1(newWorldPos.X, worldPos1.X, worldPos2.X),
-			0, scaleTo1(newWorldPos.Y, worldPos1.Y, worldPos2.Y), 0)
+		UI.Position = UDim2.new(scaleTo1(newWorldPos.X, worldPos1.X, worldPos2.X, flipXAxis),
+			0, scaleTo1(newWorldPos.Y, worldPos1.Y, worldPos2.Y, flipYAxis), 0)
 		
 		UI.Size = UDim2.new(scaleTo1(newWorldSize.X, worldPos1.X, worldPos2.X),
 			0, scaleTo1(newWorldSize.Y, worldPos1.Y, worldPos2.Y), 0)
