@@ -95,7 +95,7 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipX
 		end
 	end
 	
-	function Modify:objUI(class:string, object:Part, addEvents:table) --addEvents can be used to replace unwanted events
+	function Modify:newObjUI(class:string, object:Part, addEvents:table) --addEvents can be used to replace unwanted events
 		local UI = Instance.new(class)
 		UI.AnchorPoint = Vector2.new(0.5, 0.5)
 		UI.BorderSizePixel = 0
@@ -127,6 +127,12 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipX
 		events['Size']['PropertyEvent'] = object:GetPropertyChangedSignal("Size"):Connect(events['Size']['Callback'])
 		events['Orientation']['PropertyEvent']= object:GetPropertyChangedSignal("Orientation"):Connect(events['Orientation']['Callback'])
 		events['Color']['PropertyEvent'] = object:GetPropertyChangedSignal("Color"):Connect(events['Color']['Callback'])
+		object.Destroying:Connect(function()
+			for property, event in pairs(events) do
+				events[property]['PropertyEvent']:Disconnect()
+				events[property]['Callback'] = nil
+			end
+		end)
 		
 		if addEvents then
 			for property, callback in pairs(addEvents) do
@@ -141,13 +147,13 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipX
 		end
 		
 		for property in pairs(events) do --load UI with the properties
-			events[property]['Callback']()
+			property['Callback']()
 		end
 		
 		UIContainer[#UIContainer + 1] = {UI, events}
 		return UI
 	end
-	function Modify:posUI(class:string, newWorldPos:Vector2, newWorldSize:Vector2) --its objUI but with no events and uses Position for performance
+	function Modify:newPosUI(class:string, newWorldPos:Vector2, newWorldSize:Vector2) --its objUI but with no events and uses Position for performance
 		newWorldSize = newWorldSize or Vector2.new(0.065*worldPos2.X, 0.065*worldPos2.Y)
 		local UI = Instance.new(class)
 		UI.AnchorPoint = Vector2.new(0.5, 0.5)
