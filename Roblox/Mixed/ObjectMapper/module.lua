@@ -102,22 +102,27 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipX
 		
 		local events = {}
 		
+		events['Name'] = {}
 		events['Name']['Callback'] = function()
 			UI.Text = object.Name
 		end
+		events['Position'] = {}
 		events['Position']['Callback'] = function()
 			local objPos = object.Position
 			UI.Position = UDim2.new(scaleTo1(objPos.X, worldPos1.X, worldPos2.X, flipXAxis), 0,
 				scaleTo1(objPos.Z, worldPos1.Y, worldPos2.Y, flipYAxis), 0)
 			UI.ZIndex = objPos.Y
 		end
+		events['Size'] = {}
 		events['Size']['Callback'] = function()
 			UI.Size = UDim2.new(scaleTo1(object.Size.X, worldPos1.X, worldPos2.X), 0, 
 				scaleTo1(object.Size.Z, worldPos1.X, worldPos2.X), 0)
 		end
+		events['Orientation'] = {}
 		events['Orientation']['Callback'] = function()
 			UI.Rotation = object.Orientation.X
 		end
+		events['Color'] = {}
 		events['Color']['Callback'] = function()
 			UI.BackgroundColor3 = Color3.new(object.Color)
 		end
@@ -127,17 +132,22 @@ function objMapper:New(title:string, worldPos1:Vector2, worldPos2:Vector2, flipX
 		events['Size']['PropertyEvent'] = object:GetPropertyChangedSignal("Size"):Connect(events['Size']['Callback'])
 		events['Orientation']['PropertyEvent']= object:GetPropertyChangedSignal("Orientation"):Connect(events['Orientation']['Callback'])
 		events['Color']['PropertyEvent'] = object:GetPropertyChangedSignal("Color"):Connect(events['Color']['Callback'])
-		object.Destroying:Connect(function()
+		
+		local Destroying
+		Destroying = object.Destroying:Connect(function()
 			for property, event in pairs(events) do
 				events[property]['PropertyEvent']:Disconnect()
 				events[property]['Callback'] = nil
+				events = nil
+				Destroying:Disconnect()
 			end
 		end)
 		
 		if addEvents then
 			for property, callback in pairs(addEvents) do
 				if events[property] then events[property]['PropertyEvent']:Disconnect() end
-				if callback and typeof(callback) == "function" then 
+				if callback and typeof(callback) == "function" then
+					events[property] = {}
 					events[property]['Callback'] = callback
 					events[property]['PropertyEvent'] = object:GetPropertyChangedSignal(property):Connect(callback)
 				else
