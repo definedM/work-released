@@ -26,10 +26,10 @@ do --precreate mainUI for quicker(?) cloning
 	local healthOverlay = Instance.new("TextLabel")
 	local xButton = Instance.new("TextButton")
 
-	mainFrame.BackgroundColor3 = Color3.fromRGB(81, 81, 81)
+	mainFrame.BackgroundColor3 = Color3.new(0.24, 0.24, 0.24)
 	mainFrame.BorderSizePixel = 0
 	mainFrame.Position = UDim2.new(0.021, 0, 0.58, 0)
-	mainFrame.Size = UDim2.new(0.27, 0, 0.04, 0)
+	mainFrame.Size = UDim2.new(0.21, 0, 0.04, 0)
 	mainFrame.Visible = true
 
 	nameHolder.Name = "nameHolder"
@@ -38,12 +38,12 @@ do --precreate mainUI for quicker(?) cloning
 	nameHolder.BorderColor3 = Color3.fromRGB(89, 89, 89)
 	nameHolder.BorderMode = Enum.BorderMode.Inset
 	nameHolder.BorderSizePixel = 3
-	nameHolder.Size = UDim2.new(0.639, 0, 0.692, 0)
+	nameHolder.Size = UDim2.new(0.8, 0, 0.7, 0)
 	nameHolder.ZIndex = 5
 	nameHolder.Text = "Player: nil"
 	nameHolder.TextColor3 = Color3.fromRGB(206, 206, 206)
 	nameHolder.TextScaled = true
-		
+	
 	notifyChange.Name = "notifyChange"
 	notifyChange.BackgroundColor3 = Color3.new(0, 0, 0)
 	notifyChange.BackgroundTransparency = 1
@@ -72,13 +72,20 @@ do --precreate mainUI for quicker(?) cloning
 	healthBar.ZIndex = 5
 	healthBar.Size = UDim2.new(1, 0, 1, 0)
 	healthBar.Text = ""
-	
+
+	local uiGrad = Instance.new("UIGradient")
+	uiGrad.Name = "uiGrad"
+	uiGrad.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.new(0, 0.603922, 0)), ColorSequenceKeypoint.new(1, Color3.new(0, 1, 0))}
+	uiGrad.Rotation = 270
+	uiGrad.Parent = healthBar
+		
 	healthOverlay.Name = "healthOverlay"
 	healthOverlay.BackgroundTransparency = 1
 	healthOverlay.BorderSizePixel = 0
 	healthOverlay.Size = UDim2.new(1, 0, 1, 0)
 	healthOverlay.RichText = true
 	healthOverlay.ZIndex = 6
+	healthOverlay.Font = Enum.Font.TitilliumWeb
 	healthOverlay.Text = "<b>Health: 0/0</b>"
 	healthOverlay.TextColor3 = Color3.fromRGB(245, 245, 245)
 	healthOverlay.TextScaled = true
@@ -89,8 +96,8 @@ do --precreate mainUI for quicker(?) cloning
 	xButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
 	xButton.BorderMode = Enum.BorderMode.Inset
 	xButton.BorderSizePixel = 3
-	xButton.Position = UDim2.new(0.637, 0, 0, 0)
-	xButton.Size = UDim2.new(0.09, 0, 0.692, 0)
+	xButton.Position = UDim2.new(nameHolder.Size.X.Scale, 0, 0, 0)
+	xButton.Size = UDim2.new(0.09, 0,nameHolder.Size.Y.Scale, 0)
 	xButton.ZIndex = 5
 	xButton.Text = "X"
 	xButton.TextColor3 = Color3.fromRGB(207, 0, 0)
