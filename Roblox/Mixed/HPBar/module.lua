@@ -36,7 +36,8 @@ do --precreate mainUI for quicker(?) cloning
 	nameHolder.AnchorPoint = Vector2.new(0, 1)
 	nameHolder.BackgroundColor3 = Color3.fromRGB(38, 38, 38)
 	nameHolder.BorderColor3 = Color3.fromRGB(89, 89, 89)
-	nameHolder.BorderSizePixel = 4
+	nameHolder.BorderMode = Enum.BorderMode.Inset
+	nameHolder.BorderSizePixel = 3
 	nameHolder.Size = UDim2.new(0.639, 0, 0.692, 0)
 	nameHolder.ZIndex = 5
 	nameHolder.Text = "Player: nil"
@@ -52,7 +53,7 @@ do --precreate mainUI for quicker(?) cloning
 	notifyChange.ZIndex = 3
 	notifyChange.RichText = true
 	notifyChange.Text = "<b>+0 (0%)</b>"
-	notifyChange.TextColor3 = Color3.new(0.56, 0, 0) --for when hp is going up (green)
+	notifyChange.TextColor3 = Color3.new(0.56, 0, 0) --for when hp is going down (red)
 	notifyChange.TextScaled = true
 	notifyChange.TextStrokeColor3 = Color3.fromRGB(250, 250, 250)
 	notifyChange.TextStrokeTransparency = 0
@@ -86,7 +87,8 @@ do --precreate mainUI for quicker(?) cloning
 	xButton.AnchorPoint = Vector2.new(0, 1)
 	xButton.BackgroundColor3 = Color3.new(1, 1, 1)
 	xButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
-	xButton.BorderSizePixel = 4
+	xButton.BorderMode = Enum.BorderMode.Inset
+	xButton.BorderSizePixel = 3
 	xButton.Position = UDim2.new(0.637, 0, 0, 0)
 	xButton.Size = UDim2.new(0.09, 0, 0.692, 0)
 	xButton.ZIndex = 5
@@ -132,7 +134,6 @@ local function getNonBypassedBars()
 	local insts = 0
 	for i, v in pairs(mainUi:GetChildren()) do
 		if not v:IsA("Frame") or v:FindFirstChild("bypassUi") then continue end
-		print(v.Name, v.ClassName)
 		insts += 1
 	end
 	return insts
@@ -165,7 +166,7 @@ function HPBarModule.removeBar(barTab)
 	if event then event[2]:Disconnect() end
 	frame.nameHolder.Text = "Removing..."
 	local frameOrder = frame:GetAttribute("frameOrder")
-	local goal = {Position = UDim2.new(-0.5, 0, 0, 0)}
+	local goal = {Position = UDim2.new(-0.5, 0, frame.Position.Y.Scale, 0)}
 	local tween = TServ:Create(frame, defaultInfo_Ui, goal)
 	tween:Play()
 
@@ -173,7 +174,6 @@ function HPBarModule.removeBar(barTab)
 	frame.Parent = nil
 	frame:Destroy()
 	barTab = nil
-	print(frameOrder)
 	refreshUis:Fire(frameOrder)
 end
 
@@ -200,7 +200,7 @@ function HPBarModule.newBar(charModel:Model, posTab:table) -- padding is a numbe
 	if not human then warn("charModel contains no humanoid") end
 	
 	local frame = mainFrame:Clone()
-	local refreshEvent, refreshFunc, playerName = nil
+	local refreshEvent, refreshFunc = nil
 
 	frame:SetAttribute("frameOrder", getNonBypassedBars())
 	if not bypassUi then
@@ -225,7 +225,6 @@ function HPBarModule.newBar(charModel:Model, posTab:table) -- padding is a numbe
 			addBorderPixels(frame, frame.nameHolder) addBorderPixels = nil
 			]]
 			local UI_YEnd = frame_YLength*currFrameOrder + (basePos.Y.Scale)
-			print(frame_YLength, currFrameOrder, basePos.Y.Scale, "totals to", UI_YEnd)
 			frame.Position = startPos
 
 			local goalTab = {Position = UDim2.new(basePos.X.Scale, 0, UI_YEnd, 0)}
@@ -308,7 +307,7 @@ function HPBarModule.newBar(charModel:Model, posTab:table) -- padding is a numbe
 		HPBarModule.removeBar(barTab)
 	end)
 
-	frame.nameHolder.Text = player.Name or "[NonPlayer]: "..charModel.Name
+	frame.nameHolder.Text = playerName or "[NonPlayer]: "..charModel.Name
 	frame.Name = charModel.Name
 	frame.Parent = mainUi
 	frame.Visible = true
@@ -320,5 +319,6 @@ local s, e = pcall(function()
 	mainUi.Parent = game:WaitForChild("CoreGui", 2)
 end)
 if e then mainUi.Parent = LP:WaitForChild("PlayerGui") end
-
+print(typeof(HPBarModule))
+table.foreach(HPBarModule, print)
 return HPBarModule
