@@ -1,4 +1,3 @@
-
 local Plrs = game:GetService("Players")
 local TServ = game:GetService("TweenService")
 local LP = game.Players.LocalPlayer
@@ -186,7 +185,7 @@ end
 
 function HPBarModule.newBar(charModel:Model, posTab:table) -- padding is a number 1 to 1000 (scales a whole screen's length at 1000)
 	posTab = posTab or {}
-	local refreshOnRespawn, bypassUi = posTab['refreshOnRespawn'] or true, posTab['bypassUiFormat'] or false
+	local refreshOnRespawn, bypassUi = posTab['refreshOnRespawn'] or true, posTab['bypassUiFormat'] or false --refreshOnRespawn requires a player model
 	if not charModel then warn("charModel needs an input") return end
 	local player, playerName = Plrs:GetPlayerFromCharacter(charModel), nil
 	if player and player:IsA("Player") or charModel:IsA("Player") then
@@ -304,11 +303,20 @@ function HPBarModule.newBar(charModel:Model, posTab:table) -- padding is a numbe
 	human:GetPropertyChangedSignal("MaxHealth"):Connect(updateHP)
 	updateHP()
 
-	human.Destroying:Connect(function()
-		if not refreshFunc then HPBarModule.removeBar(barTab) return end
+	local function DeathFunc()
+		print('destroyed')
+		if not player then HPBarModule.removeBar(barTab) return end
 		frame.healthOverlay.Text = "Waiting on respawn..."
-		refreshFunc()
-	end)
+		local newHuman
+		repeat
+			player.CharacterAdded:Wait()
+			newHuman = player.Character:FindFirstChildOfClass("Humanoid")
+		until newHuman
+		updateHP()
+		if refreshFunc then refreshFunc() end
+	end
+	human.Died:Connect(DeathFunc)
+	human.Destroying:Connect(DeathFunc)
 	
 	frame.xButton.MouseButton1Up:Connect(function()
 		HPBarModule.removeBar(barTab)
@@ -326,6 +334,4 @@ local s, e = pcall(function()
 	mainUi.Parent = game:WaitForChild("CoreGui", 2)
 end)
 if e then mainUi.Parent = LP:WaitForChild("PlayerGui") end
-print(typeof(HPBarModule))
-table.foreach(HPBarModule, print)
 return HPBarModule
