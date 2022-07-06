@@ -136,9 +136,6 @@ function decalViewer.newUi(optionsTab)
 		decalGui.Size = UDim2.new(decalScaleSize, 0, decalScaleSize, 0)
 		decalGui.SizeConstraint = Enum.SizeConstraint.RelativeXX
 		
-		if uiProperties.Image == "rbxassetid://166285972" then print("works") end
-		if not infoList.Index then print("wat", #uiList, infoList) end
-		
 		decalGui.Image = uiProperties.Image or ""
 		
 		local nextIndex = #uiList + 1
