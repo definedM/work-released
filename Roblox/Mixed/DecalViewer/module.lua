@@ -341,7 +341,7 @@ function decalViewer.newUi(optionsTab)
 			window.flipSortOrder, window.sortNewDecals = newState, not newState
 			
 			window.arrangeDecals()
-			sortDirectionBtn.Text = "Flip Ui Order (Current: "..((newState == true and "Ascending)") or "Decending)"
+			sortDirectionBtn.Text = "Flip Ui Order (Current: "..(newState == true and "Ascending)") or "Decending)"
 		end)
 		sortDirectionBtn.Visible = false
 		sortDirectionBtn.Parent = SorterUi
