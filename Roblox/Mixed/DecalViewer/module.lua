@@ -125,7 +125,7 @@ function decalViewer.newUi(optionsTab)
 	function window.newDecal(infoList, uiProperties)
 		infoList = infoList or {}
 		local decalGui, uiProperties, otherProperties = Instance.new("ImageButton"), uiProperties or {}, infoList or {}
-		if uiProperties.Image and string.sub(uiProperties.Image, 1, 13) ~= "rbxassetid://" then warn("Image must be an asset id (rbxassetid://[IDNumberHere])") end
+		if uiProperties.Image and string.sub(uiProperties.Image, 1, 13) ~= "rbxassetid://" then warn("Image must be an asset id (rbxassetid://[IDNumberHere])") return end
 		
 		decalGui.Name = "decalGui"decalGui.AutoLocalize = false
 		decalGui.AutoButtonColor = false
@@ -274,7 +274,7 @@ function decalViewer.newUi(optionsTab)
 		sortDirectionBtn.Position = UDim2.new(0, 0, 1, 0)
 		sortDirectionBtn.ZIndex = 5
 		sortDirectionBtn.TextScaled = true
-		sortDirectionBtn.Text = "Flip Ui Order (Ascending)"
+		sortDirectionBtn.Text = "Flip Ui Order (Current: Ascending)"
 		
 		sortDirectionBtn:SetAttribute("flipOrder", true)
 		if optionsTab.SortableProperties then
@@ -341,7 +341,7 @@ function decalViewer.newUi(optionsTab)
 			window.flipSortOrder, window.sortNewDecals = newState, not newState
 			
 			window.arrangeDecals()
-			sortDirectionBtn.Text = "Flip Ui Order ("..((newState == true and "Ascending") or "Decending")..")"
+			sortDirectionBtn.Text = "Flip Ui Order (Current: "..((newState == true and "Ascending)") or "Decending)"
 		end)
 		sortDirectionBtn.Visible = false
 		sortDirectionBtn.Parent = SorterUi
