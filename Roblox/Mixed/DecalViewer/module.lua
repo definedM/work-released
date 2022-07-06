@@ -16,6 +16,7 @@ function decalViewer.newUi(optionsTab)
 	
 	do
 		Gui.Name = "Gui"
+		Gui.Enabled = optionsTab.Visible
 		DecalsFrame.Name = "DecalsFrame"
 		UiHider.Name = "UiHider"
 		SorterUi.Name = "SorterUi"
@@ -225,13 +226,13 @@ function decalViewer.newUi(optionsTab)
 		bool = bool or not window.Visible
 		
 		local tweenToPlay = notVisibleTween
-		if bool == true then tweenToPlay = visibleTween DecalsFrame.Visible = true end
+		if bool == true then tweenToPlay = visibleTween Gui.Enabled = true end
 		
 		tweenToPlay:Play()
 		tweenToPlay.Completed:Wait()
 		task.wait()
 		
-		DecalsFrame.Visible, window.Visible = bool, bool
+		Gui.Enabled, window.Visible = bool, bool
 	end
 
 	function window.getGui()
@@ -375,7 +376,7 @@ function decalViewer.newUi(optionsTab)
 			isHovering = false
 		end)
 	end
-	window.Visible, window.uiList, window.sortNewDecals, window.sortedProperty, window.flipSortOrder, window.callback1, window.callback2 = true, uiList, optionsTab.SortNewDecals or false, optionsTab.SortedProperty or nil, optionsTab.FlipSortOrder or optionsTab.FlipOrder or false, optionsTab.Callback1, optionsTab.Callback2
+	window.Visible, window.uiList, window.sortNewDecals, window.sortedProperty, window.flipSortOrder, window.callback1, window.callback2 = Gui.Enabled, uiList, optionsTab.SortNewDecals or false, optionsTab.SortedProperty or nil, optionsTab.FlipSortOrder or optionsTab.FlipOrder or false, optionsTab.Callback1, optionsTab.Callback2
 	print(optionsTab, window.flipSortOrder, window.sortNewDecals)
 	optionsTab = nil
 	
