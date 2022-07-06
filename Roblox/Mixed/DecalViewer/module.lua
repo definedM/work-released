@@ -16,7 +16,7 @@ function decalViewer.newUi(optionsTab)
 	
 	do
 		Gui.Name = "Gui"
-		Gui.Enabled = optionsTab.Visible
+		Gui.Enabled = optionsTab.Visible or true
 		DecalsFrame.Name = "DecalsFrame"
 		UiHider.Name = "UiHider"
 		SorterUi.Name = "SorterUi"
@@ -223,7 +223,7 @@ function decalViewer.newUi(optionsTab)
 		bool = bool or not window.Visible
 		
 		local tweenToPlay = notVisibleTween
-		if bool == true then print("opening gui") tweenToPlay = visibleTween Gui.Enabled = true end
+		if bool == true then tweenToPlay = visibleTween Gui.Enabled = true end
 		
 		tweenToPlay:Play()
 		tweenToPlay.Completed:Wait()
@@ -372,7 +372,6 @@ function decalViewer.newUi(optionsTab)
 		end)
 	end
 	window.Visible, window.uiList, window.sortNewDecals, window.sortedProperty, window.flipSortOrder, window.callback1, window.callback2 = Gui.Enabled, uiList, optionsTab.SortNewDecals or false, optionsTab.SortedProperty or nil, optionsTab.FlipSortOrder or optionsTab.FlipOrder or false, optionsTab.Callback1, optionsTab.Callback2
-	print(optionsTab, window.flipSortOrder, window.sortNewDecals)
 	optionsTab = nil
 	
 	return window
