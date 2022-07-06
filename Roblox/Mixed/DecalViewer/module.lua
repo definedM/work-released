@@ -47,7 +47,7 @@ function decalViewer.newUi(optionsTab)
 		DecalsFrame.BorderSizePixel = 0
 		DecalsFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 		DecalsFrame.Size = UDim2.new(0.6, 0, 0.6, 0)
-		DecalsFrame.SizeConstraint = Enum.SizeConstraint.RelativeXX
+		DecalsFrame.SizeConstraint = Enum.SizeConstraint.RelativeYY
 		DecalsFrame.AutomaticCanvasSize = Enum.AutomaticSize.XY
 		DecalsFrame.CanvasSize = UDim2.new(0, 0, 1, 0)
 		DecalsFrame.ScrollBarThickness = 7
@@ -223,7 +223,7 @@ function decalViewer.newUi(optionsTab)
 		bool = bool or not window.Visible
 		
 		local tweenToPlay = notVisibleTween
-		if bool == true then tweenToPlay = visibleTween Gui.Enabled = true end
+		if bool == true then print("opening gui") tweenToPlay = visibleTween Gui.Enabled = true end
 		
 		tweenToPlay:Play()
 		tweenToPlay.Completed:Wait()
@@ -262,8 +262,6 @@ function decalViewer.newUi(optionsTab)
 		end
 		
 		UiHider.MouseButton1Up:Connect(function()
-			window.toggleVisible()
-			task.wait(1)
 			window.toggleVisible()
 		end)
 		
