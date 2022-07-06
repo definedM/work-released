@@ -264,9 +264,9 @@ function decalViewer.newUi(optionsTab)
 		end
 		
 		UiHider.MouseButton1Up:Connect(function()
-			window.ToggleVisible()
+			window.toggleVisible()
 			task.wait(1)
-			window.ToggleVisible()
+			window.toggleVisible()
 		end)
 		
 		
