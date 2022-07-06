@@ -49,5 +49,7 @@ for i = 1, 1003 do
 	})
 	--print(gui.uiList[decalTab.getListIndex()].decalGui.Position.Y)
 end
-
+window.toggleVisible()
+task.wait(2)
+window.toggleVisible(true)
 print(gui.getRawList())
