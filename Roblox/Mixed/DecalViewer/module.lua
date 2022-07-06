@@ -382,31 +382,5 @@ function decalViewer.newUi(optionsTab)
 	return window
 end
 
-local gui = decalViewer.newUi({
-	DecalSize = 0.1,
-	FlipOrder = true,
-	SortNewDecals = true,
-	SortableProperties = {
-		"Index",
-		"RandomNum"
-	},
-	RawList = { --just save and load this from a file, dw about typing this manually
-		{
-			["Index"] = 1404,
-			["InsertTime"] = 0,
-			["RandomNum"] = 18,
-			["decalGuiProperties"] = {
-				["BackgroundColor3"] = Color3.new(1,0,1),
-				["Image"] = "rbxassetid://166285971" --understand that u might need to decrement the decal id a few times to get the asset id... (roblox moment)
-			}
-		}
-	},
-	Callback1 = function(properties, x, y)
-		print(properties)
-	end,
-	Callback2 = function(properties, x, y)
-		print(properties)
-	end,
-})
 
 return decalViewer
