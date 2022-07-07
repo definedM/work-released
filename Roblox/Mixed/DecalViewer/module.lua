@@ -125,7 +125,7 @@ function decalViewer.newUi(optionsTab)
 	function window.newDecal(infoList, uiProperties)
 		infoList = infoList or {}
 		local decalGui, uiProperties, otherProperties = Instance.new("ImageButton"), uiProperties or {}, infoList or {}
-		if uiProperties.Image and string.sub(uiProperties.Image, 1, 13) ~= "rbxassetid://" then warn("Image must be an asset id (rbxassetid://[IDNumberHere])") return end
+		if uiProperties.Image and string.sub(uiProperties.Image, 1, 13) ~= "rbxassetid://" then warn("Image must be an asset id (rbxassetid://[IDNumberHere]), got", tostring(uiProperties.Image)) return end
 		
 		decalGui.Name = "decalGui"decalGui.AutoLocalize = false
 		decalGui.AutoButtonColor = false
