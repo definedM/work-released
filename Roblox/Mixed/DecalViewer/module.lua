@@ -15,7 +15,7 @@ function decalViewer.newUi(optionsTab)
 	local DecalsFrame = Instance.new("ScrollingFrame")
 	
 	do
-		Gui.Name = "Gui"
+		Gui.Name = "decalsGui"
 		Gui.Enabled = optionsTab.Visible or true
 		DecalsFrame.Name = "DecalsFrame"
 		UiHider.Name = "UiHider"
