@@ -55,7 +55,12 @@ function decalViewer.newUi(optionsTab)
 		SorterUi.Parent = DecalsFrame
 		DecalsFrame.Parent = Gui
 		
-		Gui.Enabled = optionsTab.Visible or true
+		local enableGoal = optionsTab.Visible or true
+		repeat
+			print("attempting to hide")
+			Gui.Enabled = enableGoal
+			task.wait()
+		until Gui.Enabled == enableGoal
 		print(optionsTab.Visible, Gui.Enabled)
 		
 		pcall(function()
