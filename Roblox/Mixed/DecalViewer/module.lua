@@ -17,7 +17,7 @@ function decalViewer.newUi(optionsTab)
 	do
 		Gui.Name = "decalsGui"
 		Gui.Enabled = optionsTab.Visible or true
-		print(optionsTab.Visible)
+		print(optionsTab.Visible, Gui.Enabled)
 		DecalsFrame.Name = "DecalsFrame"
 		UiHider.Name = "UiHider"
 		SorterUi.Name = "SorterUi"
@@ -222,7 +222,7 @@ function decalViewer.newUi(optionsTab)
 	
 	function window.toggleVisible(bool) --providing no bool will cause it to toggle to the opposite state
 		bool = bool or not Gui.Enabled
-		
+		print("toggling to", tostring(bool))
 		if bool == Gui.Enabled then return end
 		local tweenToPlay = notVisibleTween
 		if bool == true then tweenToPlay = visibleTween Gui.Enabled = true end
