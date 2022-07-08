@@ -16,8 +16,6 @@ function decalViewer.newUi(optionsTab)
 	
 	do
 		Gui.Name = "decalsGui"
-		Gui.Enabled = optionsTab.Visible or true
-		print(optionsTab.Visible, Gui.Enabled)
 		DecalsFrame.Name = "DecalsFrame"
 		UiHider.Name = "UiHider"
 		SorterUi.Name = "SorterUi"
@@ -56,6 +54,9 @@ function decalViewer.newUi(optionsTab)
 		UiHider.Parent = DecalsFrame
 		SorterUi.Parent = DecalsFrame
 		DecalsFrame.Parent = Gui
+		
+		Gui.Enabled = optionsTab.Visible or true
+		print(optionsTab.Visible, Gui.Enabled)
 		
 		pcall(function()
 			if syn then syn.protect_gui(Gui) end
