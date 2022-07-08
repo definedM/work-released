@@ -1,6 +1,6 @@
 
 --not a full on ui library
-
+print("Loading DecalViever version 1")
 local TServ = game:GetService("TweenService")
 local displaySortsTInfo = TweenInfo.new()
 local decalViewer = {}
