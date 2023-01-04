@@ -1,5 +1,5 @@
 
-decalViewer = require(game.ReplicatedStorage.DecalViewer)
+local decalViewer = require(game.ReplicatedStorage.DecalViewer)
 local gui = decalViewer.newUi({
 	DecalSize = 0.1,
 	FlipOrder = false, --Descending
