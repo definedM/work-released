@@ -131,6 +131,10 @@ baselineAPI = {
     end,
     ["onCharacterEvent"] = function(eventType, callback) --charDied is only fired when your humanoid dies, which wont happen if your humanoid is deleted
         eventType = LPEvents[eventType]
+        if not eventType then 
+            warn(eventType, "is not a valid argument. Valid arguments are:")
+            table.foreach(LPEvents, warn)
+        end
         local index
         for i = 1, eventType.length+1 do
             if eventType[i] then continue end
